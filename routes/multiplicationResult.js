@@ -7,7 +7,7 @@ import { verifyUser } from "../utils/verifyToken.js";
 const router = express.Router();
 
 // GET /multiplicationResults/getResults
-router.get('/getResults', verifyUser, getMultiplicationResults);
+router.get('/getResults/:id', verifyUser, getMultiplicationResults);
 
 // POST/multiplicationResult/postResult
 router.post(

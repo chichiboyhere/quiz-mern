@@ -5,14 +5,15 @@ import  User from "../models/user.js";
 export const getMultiplicationResults = async(req, res, next) => {
 //  To fetch all the multiplication results associated with a user.
 try{
-  const multiplicationResults = await MultiplicationResult.find({_id: req.userId})
+  const userId = await User.findById(req.params.id)
+   const multiplicationResults = await MultiplicationResult.find({user: userId}).sort({ createdAt: -1 }).exec()
+  //const multiplicationResults = await User.find({multiplicationResults: req.body.user})
   res.status(200).json(multiplicationResults);
 }
 catch (err) {
   next(err);
 }
 };
-
 
 
 export const postMultiplicationResult = (req, res, next) => {
