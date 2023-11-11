@@ -1,23 +1,46 @@
-import { validationResult } from "express-validator";
+//import { validationResult } from "express-validator";
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import { createError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import {isValidEmail, isValidText} from "../utils/validation.js"
 
 // Register new user
 export const register = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error('Validation failed.');
-    error.statusCode = 422;
-    error.data = errors.array();
-    throw error;
+  // Fetch data posted to the 'register' route
+  const data = req.body;
+  // Create an empty error object
+  let errors = {};
+  // Validation Steps:
+  // Step one: check if email is valid
+  if (!isValidEmail(data.email)) {
+    errors.email = 'Invalid email!';
+  } else {
+  // Step two: if email is valid check, if an existing user already has the same email
+    try {
+      const existingUser = await User.findOne({ email: data.email });
+      if (existingUser) {
+        errors.email = 'Email already exists.';
+      }
+    } catch (error) {}
   }
-  const email = req.body.email;
-  const name = req.body.name;
+  // Step three: check if password is at least 6 characters long
+  if (!isValidText(data.password, 6)) {
+    errors.password = 'Invalid password. Must be at least 6 characters long.';
+  }
+ // If error(s) exist return the errors to the user...
+  if (Object.keys(errors).length > 0) {
+    return res.status(422).json({
+      message: 'User signup failed due to validation errors.',
+      errors,
+    });
+  }else{
+    // Else create new user 
+    const email = data.email;
+    const name = data.name;
   try {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = bcrypt.hashSync(data.password, salt);
 
     const newUser = new User({
       email: email,
@@ -28,11 +51,12 @@ export const register = async (req, res, next) => {
     await newUser.save();
     res.status(200).send("User has been created.");
   } catch (err) {
-    next(err);
+     next(err);
   }
-};
+  }
+}
 
-// Login in existing user
+// Login an existing user
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
