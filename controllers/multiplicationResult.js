@@ -17,12 +17,12 @@ catch (err) {
 
 
 export const postMultiplicationResult = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error('Validation failed, entered data is incorrect.');
-    error.statusCode = 422;
-    throw error;
-  }
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   const error = new Error('Validation failed, entered data is incorrect.');
+  //   error.statusCode = 422;
+  //   throw error;
+  // }
   const score = req.body.score;
   const questionCount = req.body.questionCount;
   let person;

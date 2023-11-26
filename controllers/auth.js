@@ -59,8 +59,10 @@ export const register = async (req, res, next) => {
 // Login an existing user
 export const login = async (req, res, next) => {
   try {
+    // Check if the request email is in the database
     const user = await User.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found!"));
+
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
@@ -68,7 +70,8 @@ export const login = async (req, res, next) => {
     );
     if (!isPasswordCorrect)
       return next(createError(400, "Wrong password or email!"));
-
+    
+    // Give user access to the site
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT

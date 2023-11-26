@@ -36,7 +36,7 @@ app.use("/backend/multiplicationResult", multiplicationResultRoute);
 app.use("/backend/auth", authRoute);
 app.use("/backend/users", usersRoute); 
   
-// Connection from frontend to backend
+// Handle errors
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
@@ -44,11 +44,11 @@ app.use((err, req, res, next) => {
     success: false,
     status: errorStatus,
     message: errorMessage,
-    stack: err.stack,
+    // stack: err.stack,
   });
 });
 
-
+// Connection from frontend to backend
 app.listen(8080, () => {
     connect();
     console.log("Connected to backend.");
