@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+
+stepsTo_untrack_a_file_in_git.txt

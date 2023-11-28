@@ -5,7 +5,7 @@ import multiplicationResultRoute from "./routes/multiplicationResult.js";
 import authRoute from "./routes/auth.js"
 import usersRoute from "./routes/users.js";
 import cors from "cors";
-//const bodyParser = require('body-parser');
+import corsOptions from "./config/corsOptions.js";
 
 const app = express();
 
@@ -18,7 +18,7 @@ dotenv.config();
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
-    console.log("Connected to mongoDB.");
+   // console.log("Connected to mongoDB.");
   } catch (error) {
     throw error;
   }
@@ -29,7 +29,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 // middlewares
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json()) 
 app.use("/backend/multiplicationResult", multiplicationResultRoute);
@@ -44,12 +44,12 @@ app.use((err, req, res, next) => {
     success: false,
     status: errorStatus,
     message: errorMessage,
-    // stack: err.stack,
+    stack: err.stack,
   });
 });
 
 // Connection from frontend to backend
 app.listen(8080, () => {
     connect();
-    console.log("Connected to backend.");
+    //console.log("Connected to backend.");
   });
