@@ -1,4 +1,4 @@
 export const allowedOrigins = [
-    'https://mathquiz.onrender.com'
+    'https://mathquiz-7uck.onrender.com'
 ]
 
