@@ -89,7 +89,4 @@ export const login = async (req, res, next) => {
   }
 };
 
-//users
-//kola: 652b045ac54db32653131b90
-//bola: 652b051372c12b5e65de1103
-//tolu: 65303792044dd2a1b58fd9de
+
