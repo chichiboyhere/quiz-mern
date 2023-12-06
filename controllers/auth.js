@@ -74,7 +74,7 @@ export const login = async (req, res, next) => {
     // Give user access to the site
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
-      process.env.JWT
+      process.env.ACCESS_TOKEN_SECRET 
     );
 
     const { password, isAdmin, ...otherDetails } = user._doc;

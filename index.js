@@ -5,6 +5,7 @@ import multiplicationResultRoute from "./routes/multiplicationResult.js";
 import authRoute from "./routes/auth.js"
 import usersRoute from "./routes/users.js";
 import cors from "cors";
+import dotenv from "dotenv";
 //import corsOptions from "./config/corsOptions.js";
 
 const app = express();
@@ -21,7 +22,7 @@ var corsOptions = {
 // })
 // Connection from backend to Mongo DB
 
-import dotenv from "dotenv";
+
 dotenv.config();
 
 const connect = async () => {
